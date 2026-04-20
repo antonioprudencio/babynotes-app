@@ -1,6 +1,7 @@
 enum HygieneType {
   banho('Banho'),
-  trocaDeFralda('Troca de fralda'),
+  xixi('Xixi'),
+  coco('Coco'),
   higieneBucal('Higiene bucal'),
   corteDeCabelo('Corte de cabelo'),
   corteDaUnha('Corte de unha');

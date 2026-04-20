@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../../domain/models/baby.dart';
-import '../../data/repositories/baby_repository.dart';
+import '../domain/models/baby.dart';
+import '../data/repositories/baby_repository.dart';
 
 class BabyViewModel extends ChangeNotifier {
   final BabyRepository _repository;

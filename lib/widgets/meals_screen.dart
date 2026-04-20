@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../babies/view_model/baby_view_model.dart';
-import '../../domain/models/meal.dart';
+import '../view_model/baby_view_model.dart';
+import '../domain/models/meal.dart';
 import '../view_model/meal_view_model.dart';
 import 'meal_form_dialog.dart';
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'babies/view_model/baby_view_model.dart';
-import 'babies/widgets/babies_screen.dart';
+import 'view_model/baby_view_model.dart';
+import 'view_model/meal_view_model.dart';
+import 'widgets/babies_screen.dart';
+import 'widgets/meals_screen.dart';
 import 'data/repositories/baby_repository.dart';
 import 'data/repositories/meal_repository.dart';
-import 'meals/view_model/meal_view_model.dart';
-import 'meals/widgets/meals_screen.dart';
 
 void main() {
   runApp(const MyApp());

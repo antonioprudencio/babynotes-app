@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../../domain/models/meal.dart';
-import '../../data/repositories/meal_repository.dart';
+import '../domain/models/meal.dart';
+import '../data/repositories/meal_repository.dart';
 
 class MealViewModel extends ChangeNotifier {
   final MealRepository _repository;

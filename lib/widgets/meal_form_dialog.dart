@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../domain/models/baby.dart';
-import '../../domain/models/meal.dart';
+import '../domain/models/baby.dart';
+import '../domain/models/meal.dart';
 
 class MealFormDialog extends StatefulWidget {
   final List<Baby> babies;

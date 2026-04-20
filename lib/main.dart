@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   late final List<Widget> _screens;
 
-  static const _labels = ['Babies', 'Refeições'];
+  static const _icons = [Icons.child_care, Icons.local_dining];
 
   @override
   void initState() {
@@ -69,26 +69,24 @@ class _HomeScreenState extends State<HomeScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(40),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              for (int i = 0; i < _labels.length; i++) ...[
+              for (int i = 0; i < _icons.length; i++) ...[
                 if (i > 0)
                   Text(
-                    ' | ',
+                    '|',
                     style: TextStyle(
                       color: colorScheme.onSurface.withValues(alpha: 0.4),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                TextButton(
-                  onPressed: () => setState(() => _currentIndex = i),
-                  child: Text(
-                    _labels[i],
-                    style: TextStyle(
+                Expanded(
+                  child: IconButton(
+                    onPressed: () => setState(() => _currentIndex = i),
+                    icon: Icon(
+                      _icons[i],
                       color: _currentIndex == i
                           ? colorScheme.primary
                           : colorScheme.onSurface.withValues(alpha: 0.6),
-                      fontWeight: _currentIndex == i ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                 ),

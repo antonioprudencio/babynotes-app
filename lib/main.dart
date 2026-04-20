@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Baby Notes',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 255, 235, 236)),
       ),
       home: const HomeScreen(),
     );

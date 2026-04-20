@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
 import '../view_model/baby_view_model.dart';
-import '../../data/repositories/baby_repository.dart';
 import 'baby_form_dialog.dart';
 
 class BabiesScreen extends StatefulWidget {
-  const BabiesScreen({super.key});
+  final BabyViewModel viewModel;
+  final bool showAppBar;
+
+  const BabiesScreen({super.key, required this.viewModel, this.showAppBar = true});
 
   @override
   State<BabiesScreen> createState() => _BabiesScreenState();
 }
 
 class _BabiesScreenState extends State<BabiesScreen> {
-  late final BabyViewModel _viewModel;
-
   @override
   void initState() {
     super.initState();
-    _viewModel = BabyViewModel(BabyRepository());
-    _viewModel.addListener(_onUpdate);
+    widget.viewModel.addListener(_onUpdate);
   }
 
   @override
   void dispose() {
-    _viewModel.removeListener(_onUpdate);
-    _viewModel.dispose();
+    widget.viewModel.removeListener(_onUpdate);
     super.dispose();
   }
 
@@ -41,9 +39,9 @@ class _BabiesScreenState extends State<BabiesScreen> {
     if (result == null) return;
 
     if (id == null) {
-      _viewModel.add(result);
+      widget.viewModel.add(result);
     } else {
-      _viewModel.update(id, result);
+      widget.viewModel.update(id, result);
     }
   }
 
@@ -64,7 +62,7 @@ class _BabiesScreenState extends State<BabiesScreen> {
             ),
             onPressed: () {
               Navigator.of(ctx).pop();
-              _viewModel.delete(id);
+              widget.viewModel.delete(id);
             },
             child: const Text('Apagar'),
           ),
@@ -75,13 +73,15 @@ class _BabiesScreenState extends State<BabiesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final babies = _viewModel.babies;
+    final babies = widget.viewModel.babies;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Babies'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+      appBar: widget.showAppBar
+          ? AppBar(
+              title: const Text('Babies'),
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            )
+          : null,
       body: babies.isEmpty
           ? const Center(child: Text('Nenhum baby cadastrado.'))
           : ListView.separated(

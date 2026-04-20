@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../view_model/baby_view_model.dart';
 import '../view_model/hygiene_view_model.dart';
 import '../domain/models/hygiene.dart';
+import 'date_filter_bar.dart';
 import 'hygiene_form_dialog.dart';
 
 class HygieneScreen extends StatefulWidget {
@@ -21,6 +22,8 @@ class HygieneScreen extends StatefulWidget {
 }
 
 class _HygieneScreenState extends State<HygieneScreen> {
+  DateFilter _filter = DateFilter.hoje;
+
   @override
   void initState() {
     super.initState();
@@ -95,7 +98,9 @@ class _HygieneScreenState extends State<HygieneScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final hygienes = widget.hygieneViewModel.hygienes;
+    final hygienes = widget.hygieneViewModel.hygienes
+        .where((h) => _filter.matches(h.dateTime))
+        .toList();
 
     return Scaffold(
       appBar: widget.showAppBar
@@ -104,49 +109,58 @@ class _HygieneScreenState extends State<HygieneScreen> {
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             )
           : null,
-      body: hygienes.isEmpty
-          ? const Center(child: Text('Nenhum registro de higiene.'))
-          : ListView.separated(
-              itemCount: hygienes.length,
-              separatorBuilder: (_, _) => const Divider(height: 1),
-              itemBuilder: (_, index) {
-                final h = hygienes[index];
-                final dateLabel =
-                    '${h.dateTime.day.toString().padLeft(2, '0')}/'
-                    '${h.dateTime.month.toString().padLeft(2, '0')}/'
-                    '${h.dateTime.year}  '
-                    '${h.dateTime.hour.toString().padLeft(2, '0')}:'
-                    '${h.dateTime.minute.toString().padLeft(2, '0')}';
-
-                return ListTile(
-                  leading: const CircleAvatar(child: Icon(Icons.water_drop_outlined)),
-                  title: Text(h.type.label),
-                  subtitle: Text(
-                    '${_babyName(h.babyId)} · $dateLabel'
-                    '${h.observation != null ? '\n${h.observation}' : ''}',
-                  ),
-                  isThreeLine: h.observation != null,
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit_outlined),
-                        tooltip: 'Editar',
-                        onPressed: () => _openForm(hygiene: h),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete_outline,
-                          color: Theme.of(context).colorScheme.error,
+      body: Column(
+        children: [
+          DateFilterBar(
+            selected: _filter,
+            onChanged: (f) => setState(() => _filter = f),
+          ),
+          Expanded(
+            child: hygienes.isEmpty
+                ? const Center(child: Text('Nenhum registro de higiene.'))
+                : ListView.separated(
+                    itemCount: hygienes.length,
+                    separatorBuilder: (_, _) => const Divider(height: 1),
+                    itemBuilder: (_, index) {
+                      final h = hygienes[index];
+                      final dateLabel =
+                          '${h.dateTime.day.toString().padLeft(2, '0')}/'
+                          '${h.dateTime.month.toString().padLeft(2, '0')}/'
+                          '${h.dateTime.year}  '
+                          '${h.dateTime.hour.toString().padLeft(2, '0')}:'
+                          '${h.dateTime.minute.toString().padLeft(2, '0')}';
+                      return ListTile(
+                        leading: const CircleAvatar(child: Icon(Icons.water_drop_outlined)),
+                        title: Text(h.type.label),
+                        subtitle: Text(
+                          '${_babyName(h.babyId)} · $dateLabel'
+                          '${h.observation != null ? '\n${h.observation}' : ''}',
                         ),
-                        tooltip: 'Apagar',
-                        onPressed: () => _confirmDelete(h.id),
-                      ),
-                    ],
+                        isThreeLine: h.observation != null,
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit_outlined),
+                              tooltip: 'Editar',
+                              onPressed: () => _openForm(hygiene: h),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                              tooltip: 'Apagar',
+                              onPressed: () => _confirmDelete(h.id),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openForm,
         tooltip: 'Registrar higiene',

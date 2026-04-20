@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../view_model/baby_view_model.dart';
 import '../domain/models/meal.dart';
 import '../view_model/meal_view_model.dart';
+import 'date_filter_bar.dart';
 import 'meal_form_dialog.dart';
 
 class MealsScreen extends StatefulWidget {
@@ -21,6 +22,8 @@ class MealsScreen extends StatefulWidget {
 }
 
 class _MealsScreenState extends State<MealsScreen> {
+  DateFilter _filter = DateFilter.hoje;
+
   @override
   void initState() {
     super.initState();
@@ -94,7 +97,9 @@ class _MealsScreenState extends State<MealsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final meals = widget.mealViewModel.meals;
+    final meals = widget.mealViewModel.meals
+        .where((m) => _filter.matches(m.dateTime))
+        .toList();
 
     return Scaffold(
       appBar: widget.showAppBar
@@ -103,48 +108,57 @@ class _MealsScreenState extends State<MealsScreen> {
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             )
           : null,
-      body: meals.isEmpty
-          ? const Center(child: Text('Nenhuma refeição cadastrada.'))
-          : ListView.separated(
-              itemCount: meals.length,
-              separatorBuilder: (_, _) => const Divider(height: 1),
-              itemBuilder: (_, index) {
-                final meal = meals[index];
-                final dateLabel =
-                    '${meal.dateTime.day.toString().padLeft(2, '0')}/'
-                    '${meal.dateTime.month.toString().padLeft(2, '0')}/'
-                    '${meal.dateTime.year}  '
-                    '${meal.dateTime.hour.toString().padLeft(2, '0')}:'
-                    '${meal.dateTime.minute.toString().padLeft(2, '0')}';
-
-                return ListTile(
-                  leading: const CircleAvatar(child: Icon(Icons.local_dining)),
-                  title: Text(_babyName(meal.babyId)),
-                  subtitle: Text(
-                    '$dateLabel · ${meal.type.label}'
-                    '${meal.volume != null ? ' · ${meal.volume} ml' : ''}',
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit_outlined),
-                        tooltip: 'Editar',
-                        onPressed: () => _openForm(meal: meal),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete_outline,
-                          color: Theme.of(context).colorScheme.error,
+      body: Column(
+        children: [
+          DateFilterBar(
+            selected: _filter,
+            onChanged: (f) => setState(() => _filter = f),
+          ),
+          Expanded(
+            child: meals.isEmpty
+                ? const Center(child: Text('Nenhuma refeição cadastrada.'))
+                : ListView.separated(
+                    itemCount: meals.length,
+                    separatorBuilder: (_, _) => const Divider(height: 1),
+                    itemBuilder: (_, index) {
+                      final meal = meals[index];
+                      final dateLabel =
+                          '${meal.dateTime.day.toString().padLeft(2, '0')}/'
+                          '${meal.dateTime.month.toString().padLeft(2, '0')}/'
+                          '${meal.dateTime.year}  '
+                          '${meal.dateTime.hour.toString().padLeft(2, '0')}:'
+                          '${meal.dateTime.minute.toString().padLeft(2, '0')}';
+                      return ListTile(
+                        leading: const CircleAvatar(child: Icon(Icons.local_dining)),
+                        title: Text(_babyName(meal.babyId)),
+                        subtitle: Text(
+                          '$dateLabel · ${meal.type.label}'
+                          '${meal.volume != null ? ' · ${meal.volume} ml' : ''}',
                         ),
-                        tooltip: 'Apagar',
-                        onPressed: () => _confirmDelete(meal.id),
-                      ),
-                    ],
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit_outlined),
+                              tooltip: 'Editar',
+                              onPressed: () => _openForm(meal: meal),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                              tooltip: 'Apagar',
+                              onPressed: () => _confirmDelete(meal.id),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openForm,
         tooltip: 'Registrar refeição',

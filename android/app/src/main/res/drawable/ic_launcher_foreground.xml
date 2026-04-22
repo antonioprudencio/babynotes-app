@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Cabeça do bebê (círculo) - centralizado na zona segura 66% -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,54 m-20,0 a20,20 0 1,1 40,0 a20,20 0 1,1 -40,0" />
+    <!-- Olho esquerdo -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M46,50 m-2.5,0 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0" />
+    <!-- Olho direito -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M62,50 m-2.5,0 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0" />
+    <!-- Sorriso -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#5D4037"
+        android:strokeWidth="1.8"
+        android:pathData="M44,60 Q54,68 64,60" />
+    <!-- Bochechas -->
+    <path
+        android:fillColor="#FFCDD2"
+        android:pathData="M38,58 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0" />
+    <path
+        android:fillColor="#FFCDD2"
+        android:pathData="M66,58 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0" />
+</vector>

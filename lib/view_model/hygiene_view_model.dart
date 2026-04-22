@@ -5,7 +5,14 @@ import '../data/repositories/hygiene_repository.dart';
 class HygieneViewModel extends ChangeNotifier {
   final HygieneRepository _repository;
 
-  HygieneViewModel(this._repository);
+  HygieneViewModel(this._repository) {
+    _init();
+  }
+
+  Future<void> _init() async {
+    await _repository.init();
+    notifyListeners();
+  }
 
   List<Hygiene> get hygienes => _repository.getAll();
 

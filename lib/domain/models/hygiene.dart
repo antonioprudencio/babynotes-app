@@ -40,4 +40,20 @@ class Hygiene {
       observation: observation ?? this.observation,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'babyId': babyId,
+        'dateTime': dateTime.toIso8601String(),
+        'type': type.name,
+        'observation': observation,
+      };
+
+  factory Hygiene.fromJson(Map<String, dynamic> json) => Hygiene(
+        id: json['id'] as String,
+        babyId: json['babyId'] as String,
+        dateTime: DateTime.parse(json['dateTime'] as String),
+        type: HygieneType.values.byName(json['type'] as String),
+        observation: json['observation'] as String?,
+      );
 }

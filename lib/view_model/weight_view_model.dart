@@ -5,7 +5,14 @@ import '../data/repositories/weight_repository.dart';
 class WeightViewModel extends ChangeNotifier {
   final WeightRepository _repository;
 
-  WeightViewModel(this._repository);
+  WeightViewModel(this._repository) {
+    _init();
+  }
+
+  Future<void> _init() async {
+    await _repository.init();
+    notifyListeners();
+  }
 
   List<WeightRecord> getByBaby(String babyId) => _repository.getByBaby(babyId);
 

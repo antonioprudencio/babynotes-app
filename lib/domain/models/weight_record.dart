@@ -24,4 +24,18 @@ class WeightRecord {
       weightKg: weightKg ?? this.weightKg,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'babyId': babyId,
+        'date': date.toIso8601String(),
+        'weightKg': weightKg,
+      };
+
+  factory WeightRecord.fromJson(Map<String, dynamic> json) => WeightRecord(
+        id: json['id'] as String,
+        babyId: json['babyId'] as String,
+        date: DateTime.parse(json['date'] as String),
+        weightKg: (json['weightKg'] as num).toDouble(),
+      );
 }

@@ -41,4 +41,22 @@ class Medication {
       unit: unit ?? this.unit,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'babyId': babyId,
+        'dateTime': dateTime.toIso8601String(),
+        'name': name,
+        'dose': dose,
+        'unit': unit.name,
+      };
+
+  factory Medication.fromJson(Map<String, dynamic> json) => Medication(
+        id: json['id'] as String,
+        babyId: json['babyId'] as String,
+        dateTime: DateTime.parse(json['dateTime'] as String),
+        name: json['name'] as String,
+        dose: (json['dose'] as num).toDouble(),
+        unit: DoseUnit.values.byName(json['unit'] as String),
+      );
 }

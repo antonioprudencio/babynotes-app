@@ -5,7 +5,14 @@ import '../data/repositories/meal_repository.dart';
 class MealViewModel extends ChangeNotifier {
   final MealRepository _repository;
 
-  MealViewModel(this._repository);
+  MealViewModel(this._repository) {
+    _init();
+  }
+
+  Future<void> _init() async {
+    await _repository.init();
+    notifyListeners();
+  }
 
   List<Meal> get meals => _repository.getAll();
 

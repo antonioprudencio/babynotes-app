@@ -36,4 +36,20 @@ class Meal {
       volume: volume ?? this.volume,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'babyId': babyId,
+        'dateTime': dateTime.toIso8601String(),
+        'type': type.name,
+        'volume': volume,
+      };
+
+  factory Meal.fromJson(Map<String, dynamic> json) => Meal(
+        id: json['id'] as String,
+        babyId: json['babyId'] as String,
+        dateTime: DateTime.parse(json['dateTime'] as String),
+        type: MealType.values.byName(json['type'] as String),
+        volume: json['volume'] != null ? (json['volume'] as num).toDouble() : null,
+      );
 }

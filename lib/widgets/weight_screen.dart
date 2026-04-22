@@ -161,7 +161,7 @@ class _WeightScreenState extends State<WeightScreen> {
             color: e.color,
             barWidth: 2.5,
             dotData: FlDotData(
-              getDotPainter: (_, __, _, _) => FlDotCirclePainter(
+              getDotPainter: (_, _, _, _) => FlDotCirclePainter(
                 radius: 4,
                 color: e.color,
                 strokeWidth: 2,

@@ -10,4 +10,9 @@ class Baby {
       name: name ?? this.name,
     );
   }
+
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
+
+  factory Baby.fromJson(Map<String, dynamic> json) =>
+      Baby(id: json['id'] as String, name: json['name'] as String);
 }

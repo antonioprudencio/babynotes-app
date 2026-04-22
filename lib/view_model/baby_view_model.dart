@@ -5,7 +5,14 @@ import '../data/repositories/baby_repository.dart';
 class BabyViewModel extends ChangeNotifier {
   final BabyRepository _repository;
 
-  BabyViewModel(this._repository);
+  BabyViewModel(this._repository) {
+    _init();
+  }
+
+  Future<void> _init() async {
+    await _repository.init();
+    notifyListeners();
+  }
 
   List<Baby> get babies => _repository.getAll();
 

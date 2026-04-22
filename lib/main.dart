@@ -9,6 +9,7 @@ import 'widgets/meals_screen.dart';
 import 'widgets/medications_screen.dart';
 import 'widgets/hygiene_screen.dart';
 import 'widgets/weight_screen.dart';
+import 'widgets/statistics_screen.dart';
 import 'data/repositories/baby_repository.dart';
 import 'data/repositories/meal_repository.dart';
 import 'data/repositories/medication_repository.dart';
@@ -58,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Icons.medication,
     Icons.water_drop_outlined,
     Icons.monitor_weight_outlined,
+    Icons.bar_chart,
   ];
 
   @override
@@ -69,6 +71,14 @@ class _HomeScreenState extends State<HomeScreen> {
       MedicationsScreen(medicationViewModel: _medicationViewModel, babyViewModel: _babyViewModel, showAppBar: false),
       HygieneScreen(hygieneViewModel: _hygieneViewModel, babyViewModel: _babyViewModel, showAppBar: false),
       WeightScreen(weightViewModel: _weightViewModel, babyViewModel: _babyViewModel, showAppBar: false),
+      StatisticsScreen(
+        babyViewModel: _babyViewModel,
+        mealViewModel: _mealViewModel,
+        medicationViewModel: _medicationViewModel,
+        hygieneViewModel: _hygieneViewModel,
+        weightViewModel: _weightViewModel,
+        showAppBar: false,
+      ),
     ];
   }
 

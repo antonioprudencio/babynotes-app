@@ -4,7 +4,8 @@ enum HygieneType {
   coco('Coco'),
   higieneBucal('Higiene bucal'),
   corteDeCabelo('Corte de cabelo'),
-  corteDaUnha('Corte de unha');
+  corteDaUnha('Corte de unha'),
+  lavagemNasal('Lavagem nasal');
 
   final String label;
   const HygieneType(this.label);

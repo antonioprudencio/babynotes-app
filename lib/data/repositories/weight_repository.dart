@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/models/weight_record.dart';
+import '../../domain/models/sync_status.dart';
 
 class WeightRepository {
   static const _key = 'weight_records';
@@ -11,6 +12,17 @@ class WeightRepository {
   List<WeightRecord> getByBaby(String babyId) =>
       _records.where((r) => r.babyId == babyId).toList()
         ..sort((a, b) => a.date.compareTo(b.date));
+
+  WeightRecord? getById(String id) {
+    try {
+      return _records.firstWhere((r) => r.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  List<WeightRecord> getPending() =>
+      _records.where((r) => r.syncStatus != SyncStatus.synced).toList();
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,6 +45,24 @@ class WeightRepository {
     final index = _records.indexWhere((r) => r.id == record.id);
     if (index != -1) {
       _records[index] = record;
+      _save();
+    }
+  }
+
+  void upsert(WeightRecord record) {
+    final index = _records.indexWhere((r) => r.id == record.id);
+    if (index != -1) {
+      _records[index] = record;
+    } else {
+      _records.add(record);
+    }
+    _save();
+  }
+
+  void markSynced(String id) {
+    final index = _records.indexWhere((r) => r.id == id);
+    if (index != -1) {
+      _records[index] = _records[index].copyWith(syncStatus: SyncStatus.synced);
       _save();
     }
   }

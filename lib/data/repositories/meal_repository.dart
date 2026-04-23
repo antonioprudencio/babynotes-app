@@ -1,12 +1,24 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/models/meal.dart';
+import '../../domain/models/sync_status.dart';
 
 class MealRepository {
   static const _key = 'meals';
   final List<Meal> _meals = [];
 
   List<Meal> getAll() => List.unmodifiable(_meals);
+
+  Meal? getById(String id) {
+    try {
+      return _meals.firstWhere((m) => m.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  List<Meal> getPending() =>
+      _meals.where((m) => m.syncStatus != SyncStatus.synced).toList();
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
@@ -29,6 +41,24 @@ class MealRepository {
     final index = _meals.indexWhere((m) => m.id == meal.id);
     if (index != -1) {
       _meals[index] = meal;
+      _save();
+    }
+  }
+
+  void upsert(Meal meal) {
+    final index = _meals.indexWhere((m) => m.id == meal.id);
+    if (index != -1) {
+      _meals[index] = meal;
+    } else {
+      _meals.add(meal);
+    }
+    _save();
+  }
+
+  void markSynced(String id) {
+    final index = _meals.indexWhere((m) => m.id == id);
+    if (index != -1) {
+      _meals[index] = _meals[index].copyWith(syncStatus: SyncStatus.synced);
       _save();
     }
   }

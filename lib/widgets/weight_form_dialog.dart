@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../domain/models/baby.dart';
+import '../domain/models/sync_status.dart';
 import '../domain/models/weight_record.dart';
 
 class WeightFormDialog extends StatefulWidget {
@@ -52,6 +53,8 @@ class _WeightFormDialogState extends State<WeightFormDialog> {
           babyId: _selectedBabyId!,
           date: _selectedDate,
           weightKg: double.parse(_weightController.text.trim()),
+          updatedAt: widget.initialRecord?.updatedAt ?? DateTime.now(),
+          syncStatus: widget.initialRecord?.syncStatus ?? SyncStatus.pendingCreate,
         ),
       );
     }

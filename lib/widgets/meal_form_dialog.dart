@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../domain/models/baby.dart';
 import '../domain/models/meal.dart';
+import '../domain/models/sync_status.dart';
 
 class MealFormDialog extends StatefulWidget {
   final List<Baby> babies;
@@ -66,6 +67,8 @@ class _MealFormDialogState extends State<MealFormDialog> {
         volume: _selectedType == MealType.mamadeira
             ? double.tryParse(_volumeController.text.trim())
             : null,
+        updatedAt: widget.initialMeal?.updatedAt ?? DateTime.now(),
+        syncStatus: widget.initialMeal?.syncStatus ?? SyncStatus.pendingCreate,
       );
       Navigator.of(context).pop(meal);
     }

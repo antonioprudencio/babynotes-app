@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../domain/models/baby.dart';
 import '../domain/models/medication.dart';
+import '../domain/models/sync_status.dart';
 
 class MedicationFormDialog extends StatefulWidget {
   final List<Baby> babies;
@@ -68,6 +69,8 @@ class _MedicationFormDialogState extends State<MedicationFormDialog> {
         name: _nameController.text.trim(),
         dose: double.parse(_doseController.text.trim()),
         unit: _selectedUnit,
+        updatedAt: widget.initialMedication?.updatedAt ?? DateTime.now(),
+        syncStatus: widget.initialMedication?.syncStatus ?? SyncStatus.pendingCreate,
       );
       Navigator.of(context).pop(medication);
     }

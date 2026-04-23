@@ -1,12 +1,24 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/models/baby.dart';
+import '../../domain/models/sync_status.dart';
 
 class BabyRepository {
   static const _key = 'babies';
   final List<Baby> _babies = [];
 
   List<Baby> getAll() => List.unmodifiable(_babies);
+
+  Baby? getById(String id) {
+    try {
+      return _babies.firstWhere((b) => b.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  List<Baby> getPending() =>
+      _babies.where((b) => b.syncStatus != SyncStatus.synced).toList();
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
@@ -29,6 +41,24 @@ class BabyRepository {
     final index = _babies.indexWhere((b) => b.id == baby.id);
     if (index != -1) {
       _babies[index] = baby;
+      _save();
+    }
+  }
+
+  void upsert(Baby baby) {
+    final index = _babies.indexWhere((b) => b.id == baby.id);
+    if (index != -1) {
+      _babies[index] = baby;
+    } else {
+      _babies.add(baby);
+    }
+    _save();
+  }
+
+  void markSynced(String id) {
+    final index = _babies.indexWhere((b) => b.id == id);
+    if (index != -1) {
+      _babies[index] = _babies[index].copyWith(syncStatus: SyncStatus.synced);
       _save();
     }
   }

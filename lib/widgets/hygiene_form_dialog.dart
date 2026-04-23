@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../domain/models/baby.dart';
 import '../domain/models/hygiene.dart';
+import '../domain/models/sync_status.dart';
 
 class HygieneFormDialog extends StatefulWidget {
   final List<Baby> babies;
@@ -66,6 +67,8 @@ class _HygieneFormDialogState extends State<HygieneFormDialog> {
           dateTime: _selectedDateTime,
           type: _selectedType,
           observation: observation.isEmpty ? null : observation,
+          updatedAt: widget.initialHygiene?.updatedAt ?? DateTime.now(),
+          syncStatus: widget.initialHygiene?.syncStatus ?? SyncStatus.pendingCreate,
         ),
       );
     }
